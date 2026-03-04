@@ -147,6 +147,7 @@ passport.use(
             googleId: profile.id,
             authProvider: "google",
           });
+          await createTemplateNote(newUser._id);
           return done(null, newUser);
         } else {
           return done(null, user);
@@ -179,6 +180,32 @@ const requireAuth = (req, res, next) => {
   if (req.isAuthenticated()) return next();
   return res.status(401).json({ error: "Unauthorized. Please log in." });
 };
+
+//____________ TemplateNote __________________________________________________________
+async function createTemplateNote(userId) {
+  const templateNote = {
+    title: "Try me",
+    content: `Welcome to NoteIt 📑
+This is a sample note created automatically so you can explore the features of this app without having to write a long note yourself.
+
+Things you can try in this note:
+• ✏️ Edit the text and save changes  
+• 🧠 Click "Summarize" to generate an AI summary  
+• 💬 Ask questions about this note using the AI assistant  
+• ✨ Use "Optimize" to improve clarity and writing tone  
+• 🗑  Delete the note once you're done exploring  
+
+About AI-powered note tools:
+Artificial intelligence is changing how people interact with written information. Instead of reading long documents line by line, users can now generate summaries, extract key insights, and ask contextual questions about their own notes. Tools that combine traditional note-taking with AI capabilities can help users process information faster, improve writing clarity, and better understand complex topics.
+In modern productivity workflows, notes are no longer just static pieces of text. They can become interactive knowledge sources where AI helps organize thoughts, summarize important ideas, and answer questions based on the content written by the user.
+Machine learning systems analyze patterns in large amounts of data to generate useful predictions and insights. When integrated into productivity tools, these systems can assist users by summarizing lengthy notes, rewriting text to improve readability, and answering questions about stored information. As AI models continue to improve, they are increasingly capable of understanding context, identifying key ideas, and helping users work more efficiently with written content.`,
+  };
+  await Note.create({
+    title: templateNote.title,
+    content: templateNote.content,
+    userId,
+  });
+}
 
 // ── Auth Routes ────────────────────────────────────────────────────────────────────
 //Check Session
@@ -215,6 +242,7 @@ app.post(
         password: hashedPassword,
         authProvider: "local",
       });
+      await createTemplateNote(newUser._id);
       req.login(newUser, (err) => {
         if (err) return next(err);
         return res.status(201).json({
@@ -272,10 +300,10 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureRedirect: process.env.CLIENT_URL,
   }),
   (req, res) => {
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    res.redirect(process.env.CLIENT_URL);
   },
 );
 
