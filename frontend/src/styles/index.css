@@ -52,9 +52,26 @@ body {
   border-radius: 12px; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
   overflow: hidden; 
-  background: var(--border);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   margin: 50px auto 20px;
+
+   background-image: url("../assests/images/landing_page_2.png");
+   background-size: cover; 
+  background-position: right; 
+  background-repeat: no-repeat;
+
+  transform-origin: top center; 
+  animation: swing 6s ease-in-out infinite;
+  transition: transform 0.5s ease; 
+}
+
+@keyframes swing {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.landing:hover {
+  animation-play-state: paused;
 }
 
 /* Responsive breakpoint */
@@ -82,11 +99,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--pharlap);
-}
-
-.landing-info h1 {
-  color: var(--bg);
 }
 
 /*__________Login-card div_____________________________*/
@@ -101,6 +113,16 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: backdrop-filter 0.5s ease, background 0.5s ease;
+}
+
+.login-card:hover{ 
+  backdrop-filter: blur(0px); 
+  background: rgba(255, 255, 255, 0.2); 
 }
 
 .login-card h2 {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../services/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Landing({ onLogin }) {
   const [isSingingUp, setSingingUp] = useState(false);
@@ -38,7 +39,7 @@ function Landing({ onLogin }) {
 
   const handleGoogleAuth = async () => {
     try{
-         window.location.href = "http://localhost:3000/auth/google";    
+        window.location.href = `${API_URL}/auth/google`;    
     }
     catch (err){
       setError(err.message);
@@ -55,9 +56,7 @@ function Landing({ onLogin }) {
       )}
 
       <div className="landing">
-        <div className="landing-info">
-          <h1>Hello</h1>
-          <h1>NoteIt</h1>
+        <div className="landing-info">\
         </div>
 
         <div className="login-card">
